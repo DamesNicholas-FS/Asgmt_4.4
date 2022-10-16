@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const { restart } = require("nodemon");
 const product = require("../api/models/product");
 const router = express.Router();
 
@@ -11,15 +10,7 @@ router.get('/',(req,res,next) => {
             console.log(result)
             res.status(200).json({
                 message: 'View All Products',
-                product: {
-                    name: result.name,
-                    company: result.company,
-                    id: result._id,
-                    metadata: {
-                        method: req.method,
-                        host: req.hostname
-                    }
-                }
+                product: (result)
             })
         })
         .catch( err => {
@@ -85,7 +76,8 @@ router.get('/:productId', (req,res,next) =>{
         .then(result => {
             console.log(result)
             res.status(200).json({
-                message: 'Found: ' + result.name,
+                message: 'Found Product',
+                // message: 'Found: ' + result.name,
                 product: {
                     name: result.name,
                     company: result.company,
@@ -122,30 +114,29 @@ router.patch('/:productId', (req,res,next) => {
     }
 
     product.updateOne({
-        _id:productId,
+        _id: productId
     }, {
         $set: updateProduct
-    }).then( result => {
+    })
+    .then(result => {
+        console.log(result)
         res.status(200).json({
-            message: 'Updated Product',
-            product: { 
-                name: result.name,
-                company: result.company,
-                id: result._id
-            },
+            message: 'Product Updated',
+            product: (result),
             metadata:{
                 host: req.hostname,
-                method: req.method,
+                method: req.method
             }
         })
     })
     .catch( err => {
+        console.error(err.message);
         res.status(500).json({
             error:{
-                message: err.message,
+                message: err.message
             }
         })
-    });
+    })
     
     // res.json({
     //     message: 'Products-PATCH',
@@ -157,20 +148,19 @@ router.patch('/:productId', (req,res,next) => {
 router.delete('/:productId', (req,res,next) => {
     const productId = req.params.productId;
 
-    product.deleteOne({productId})
+    // const deleteProduct = { // NOT NEEDED
+    //     name: req.body.name,
+    //     company: req.body.name
+    // }
+
+    product.deleteOne({
+        _id: productId
+    })
         .then(result => {
             console.log(result)
             res.status(200).json({
                 message: 'Item was Deleted Successful!',
-                product:{
-                    name: result.name,
-                    company: result.company,
-                    id: result._id,
-                    metadata: {
-                        method: req.method,
-                        host: req.hostname
-                    }
-                }
+                product:(result) // When doing it that way as a JSON, it always comes back blank in PM but not in VSC
             })
         })
         .catch( err => {
