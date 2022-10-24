@@ -36,7 +36,7 @@ app.get('/', (req, res, next) => {
 })});
 
 //LocaHost post /
-app.use('/companies', companies);
+app.use('/company', companies);
 app.use('/product', product)
 
 //error handling
@@ -63,5 +63,6 @@ mongoose.connect(process.env.mongooseURL, (err) => {
         console.log('MongoDB Connection was successful');
     }
 })
+
 
 module.exports = app;

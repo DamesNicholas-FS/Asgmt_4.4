@@ -65,15 +65,25 @@ router.get('/:productId', (req,res,next) =>{
 
 //Post - Write  w/ID
 router.post('/',(req,res,next) => {
-    
+
+product.find({
+    name: req.body.name,
+    company: req.body.company
+}).exec().then(result => {
+    console.log(result);
+    if(result.length > 0){
+        return res.status(406).json({
+            message: "Item Already Exist!"
+        })
+    }
     const newProduct = new product({
         _id: mongoose.Types.ObjectId(),
         name: req.body.name,
         company: req.body.company
     })
-
+    
     // Writing to Database
-
+    
     newProduct.save()
         .then(result => {
             console.log(result);
@@ -102,7 +112,9 @@ router.post('/',(req,res,next) => {
     // res.json({
     //     message: "Products-POST"
     // })
+    })
 })
+
 
 //Patch by ID - Update
 router.patch('/:productId', (req,res,next) => {
