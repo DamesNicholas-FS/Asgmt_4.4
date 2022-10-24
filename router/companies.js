@@ -1,5 +1,5 @@
 const express = require("express");
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 const company = require("../api/models/company");
 const Company = require("../api/models/company");
 const product = require("../api/models/product");
@@ -81,7 +81,7 @@ router.get('/:companiesId', (req,res,next) =>{
     const companiesId = req.params.companiesId;
     
     Company.findById(companiesId)
-    .select("company _id")
+    .select("_id company")
     .populate("product", "company product")
     .exec()
     .then(company => {

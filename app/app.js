@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
-const companies = require('../router/companies')
+const company = require('../router/companies')
 const product = require('../router/products')
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -14,6 +14,7 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({
     extended: true
 }));
+
 //Middleware Json
 app.use(express.json());
 
@@ -36,7 +37,7 @@ app.get('/', (req, res, next) => {
 })});
 
 //LocaHost post /
-app.use('/company', companies);
+app.use('/company', company);
 app.use('/product', product)
 
 //error handling

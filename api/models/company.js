@@ -4,7 +4,7 @@ const companySchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     product:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
+        ref: 'Product',
         require: true
     },
     company:{
